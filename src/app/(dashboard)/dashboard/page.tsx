@@ -2,7 +2,7 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Truck, CheckCircle, Clock } from "lucide-react"
+import { FileText, CheckCircle, Clock } from "lucide-react"
 import { BILL_STATUS_LABELS, BILL_STATUS_COLORS } from "@/lib/constants"
 import Link from "next/link"
 
