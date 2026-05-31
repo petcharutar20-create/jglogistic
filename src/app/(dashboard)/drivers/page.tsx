@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default async function DriversPage() {
   const session = await auth()
-  if (session?.user.role !== "ADMIN") redirect("/dashboard")
+  if (session?.user?.role !== "ADMIN") redirect("/dashboard")
 
   const drivers = await prisma.user.findMany({
     where: { role: "DRIVER" },

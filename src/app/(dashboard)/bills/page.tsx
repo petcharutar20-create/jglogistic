@@ -8,8 +8,8 @@ import { Plus } from "lucide-react"
 
 export default async function BillsPage() {
   const session = await auth()
-  const isAdmin = session?.user.role === "ADMIN"
-  const whereClause = isAdmin ? {} : { driverId: session?.user.id }
+  const isAdmin = session?.user?.role === "ADMIN"
+  const whereClause = isAdmin ? {} : { driverId: session?.user?.id }
 
   const bills = await prisma.bill.findMany({
     where: whereClause,

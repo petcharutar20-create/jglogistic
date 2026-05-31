@@ -8,9 +8,9 @@ import Link from "next/link"
 
 export default async function DashboardPage() {
   const session = await auth()
-  const isAdmin = session?.user.role === "ADMIN"
+  const isAdmin = session?.user?.role === "ADMIN"
 
-  const whereClause = isAdmin ? {} : { driverId: session?.user.id }
+  const whereClause = isAdmin ? {} : { driverId: session?.user?.id }
 
   const [total, completed, inProgress, recentBills] = await Promise.all([
     prisma.bill.count({ where: whereClause }),

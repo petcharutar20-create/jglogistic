@@ -5,7 +5,7 @@ import { CreateBillForm } from "@/components/bills/create-bill-form"
 
 export default async function NewBillPage() {
   const session = await auth()
-  if (session?.user.role !== "ADMIN") redirect("/dashboard")
+  if (session?.user?.role !== "ADMIN") redirect("/dashboard")
 
   const [vehicles, drivers, customers] = await Promise.all([
     prisma.vehicle.findMany({ where: { isActive: true }, orderBy: { plateNumber: "asc" } }),

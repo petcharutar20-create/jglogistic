@@ -6,7 +6,7 @@ import { Truck } from "lucide-react"
 
 export default async function VehiclesPage() {
   const session = await auth()
-  if (session?.user.role !== "ADMIN") redirect("/dashboard")
+  if (session?.user?.role !== "ADMIN") redirect("/dashboard")
 
   const vehicles = await prisma.vehicle.findMany({ orderBy: { plateNumber: "asc" } })
 

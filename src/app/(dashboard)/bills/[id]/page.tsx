@@ -29,8 +29,8 @@ export default async function BillDetailPage(props: { params: Promise<{ id: stri
 
   if (!bill) notFound()
 
-  const isAdmin = session?.user.role === "ADMIN"
-  const isAssignedDriver = session?.user.id === bill.driverId
+  const isAdmin = session?.user?.role === "ADMIN"
+  const isAssignedDriver = session?.user?.id === bill.driverId
   const canUpdateStatus = isAdmin || isAssignedDriver
   const isCompleted = bill.status === "COMPLETED"
   const nextStatus = BILL_STATUS_ORDER[BILL_STATUS_ORDER.indexOf(bill.status) + 1]
