@@ -6,6 +6,7 @@ import type { Role } from "@/generated/prisma/enums"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  trustHost: true,
   providers: [
     LineProvider({
       clientId: process.env.LINE_CLIENT_ID!,
