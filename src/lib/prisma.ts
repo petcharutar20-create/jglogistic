@@ -1,6 +1,5 @@
 import { PrismaClient } from "@/generated/prisma/client"
-import { PrismaPg } from "@prisma/adapter-pg"
-import pg from "pg"
+import { PrismaNeon } from "@prisma/adapter-neon"
 
 function getConnectionString() {
   const url = new URL(process.env.DATABASE_URL!)
@@ -9,12 +8,7 @@ function getConnectionString() {
 }
 
 function createPrismaClient() {
-  const pool = new pg.Pool({
-    connectionString: getConnectionString(),
-    ssl: { rejectUnauthorized: false },
-    max: 1,
-  })
-  const adapter = new PrismaPg(pool)
+  const adapter = new PrismaNeon({ connectionString: getConnectionString() })
   return new PrismaClient({ adapter })
 }
 
