@@ -3,10 +3,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import LineProvider from "next-auth/providers/line"
 import { prisma } from "@/lib/prisma"
 import type { Role } from "@/generated/prisma/enums"
+import type { DefaultSession } from "next-auth"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   trustHost: true,
+  session: { strategy: "jwt" },
   providers: [
     LineProvider({
       clientId: process.env.LINE_CLIENT_ID!,
@@ -14,26 +16,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id
-        const dbUser = await prisma.user.findUnique({
-          where: { id: user.id },
-          select: { role: true, lineUserId: true },
-        })
-        session.user.role = dbUser?.role ?? "DRIVER"
-        session.user.lineUserId = dbUser?.lineUserId ?? null
+    async jwt({ token, user, account }) {
+      if (user?.id) {
+        token.id = user.id
       }
-      return session
-    },
-    async signIn({ user, account }) {
-      if (account?.provider === "line" && account.providerAccountId) {
+      if (account?.provider === "line") {
+        token.lineUserId = account.providerAccountId
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { role: true },
+        }).catch(() => null)
+        token.role = dbUser?.role ?? "DRIVER"
+        // save lineUserId to user record
         await prisma.user.update({
-          where: { id: user.id },
+          where: { id: token.id as string },
           data: { lineUserId: account.providerAccountId },
         }).catch(() => null)
       }
-      return true
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.role = (token.role as Role) ?? "DRIVER"
+        session.user.lineUserId = (token.lineUserId as string) ?? null
+      }
+      return session
     },
   },
   pages: {
@@ -50,5 +58,3 @@ declare module "next-auth" {
     } & DefaultSession["user"]
   }
 }
-
-import type { DefaultSession } from "next-auth"
