@@ -2,17 +2,13 @@ import { PrismaClient } from "@/generated/prisma/client"
 import { PrismaNeon } from "@prisma/adapter-neon"
 import { neonConfig } from "@neondatabase/serverless"
 
-// Use HTTP fetch instead of WebSocket for better Vercel serverless compatibility
-neonConfig.poolQueryViaFetch = true
-
-function getConnectionString() {
-  const url = new URL(process.env.DATABASE_URL!)
-  url.searchParams.delete("channel_binding")
-  return url.toString()
-}
-
 function createPrismaClient() {
-  const adapter = new PrismaNeon({ connectionString: getConnectionString() })
+  neonConfig.poolQueryViaFetch = true
+
+  const connectionString = (process.env.DATABASE_URL ?? "")
+    .replace(/[?&]channel_binding=[^&]*/g, "")
+
+  const adapter = new PrismaNeon({ connectionString })
   return new PrismaClient({ adapter })
 }
 
