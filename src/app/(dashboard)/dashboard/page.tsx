@@ -12,12 +12,9 @@ export default async function DashboardPage() {
 
   const whereClause = isAdmin ? {} : { driverId: session?.user?.id }
 
-  const [total, completed, inProgress, recentBills] = await Promise.all([
+  const [total, completed, recentBills] = await Promise.all([
     prisma.bill.count({ where: whereClause }),
     prisma.bill.count({ where: { ...whereClause, status: "COMPLETED" } }),
-    prisma.bill.count({
-      where: { ...whereClause, status: { not: "COMPLETED" } },
-    }),
     prisma.bill.findMany({
       where: whereClause,
       orderBy: { billNumber: "desc" },
@@ -25,6 +22,7 @@ export default async function DashboardPage() {
       include: { vehicle: true, driver: true, customer: true },
     }),
   ])
+  const inProgress = total - completed
 
   return (
     <div className="space-y-6">
