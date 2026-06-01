@@ -1,12 +1,10 @@
 import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
 import LineProvider from "next-auth/providers/line"
 import { prisma } from "@/lib/prisma"
 import type { Role } from "@/generated/prisma/enums"
 import type { DefaultSession } from "next-auth"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   trustHost: true,
   session: { strategy: "jwt" },
   providers: [
@@ -17,27 +15,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      if (user?.id) {
-        token.id = user.id
-      }
-      if (account?.provider === "line") {
-        token.lineUserId = account.providerAccountId
-        const dbUser = await prisma.user.findUnique({
-          where: { id: token.id as string },
-          select: { role: true },
-        }).catch(() => null)
-        token.role = dbUser?.role ?? "DRIVER"
-        // save lineUserId to user record
-        await prisma.user.update({
-          where: { id: token.id as string },
-          data: { lineUserId: account.providerAccountId },
-        }).catch(() => null)
+      // First sign-in: find or create user in DB
+      if (account?.provider === "line" && account.providerAccountId) {
+        const lineUserId = account.providerAccountId
+
+        let dbUser = await prisma.user
+          .findUnique({ where: { lineUserId } })
+          .catch(() => null)
+
+        if (!dbUser) {
+          dbUser = await prisma.user
+            .create({
+              data: {
+                name: user?.name,
+                image: user?.image,
+                lineUserId,
+                role: "DRIVER",
+              },
+            })
+            .catch(() => null)
+        }
+
+        if (dbUser) {
+          token.userId = dbUser.id
+          token.role = dbUser.role
+          token.lineUserId = lineUserId
+        }
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string
+        session.user.id = (token.userId as string) ?? ""
         session.user.role = (token.role as Role) ?? "DRIVER"
         session.user.lineUserId = (token.lineUserId as string) ?? null
       }
