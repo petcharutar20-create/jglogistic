@@ -15,7 +15,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      // First sign-in: find or create user in DB
       if (account?.provider === "line" && account.providerAccountId) {
         const lineUserId = account.providerAccountId
 
@@ -41,6 +40,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.role = dbUser.role
           token.lineUserId = lineUserId
         }
+      } else if (token.userId) {
+        // Refresh role from DB on every token refresh so role changes take effect immediately
+        const dbUser = await prisma.user
+          .findUnique({ where: { id: token.userId as string }, select: { role: true } })
+          .catch(() => null)
+        if (dbUser) token.role = dbUser.role
       }
       return token
     },

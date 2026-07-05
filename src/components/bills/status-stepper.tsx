@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 
 interface StatusStepperProps {
   currentStatus: BillStatus
+  compact?: boolean
 }
 
-export function StatusStepper({ currentStatus }: StatusStepperProps) {
+export function StatusStepper({ currentStatus, compact = false }: StatusStepperProps) {
   const currentIndex = BILL_STATUS_ORDER.indexOf(currentStatus)
 
   return (
@@ -20,20 +21,32 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
 
         return (
           <div key={status} className="flex items-center flex-1 last:flex-none">
-            <div className="flex flex-col items-center gap-1">
-              <div
-                className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors",
-                  isDone && "border-green-500 bg-green-500 text-white",
-                  isCurrent && "border-primary bg-primary text-primary-foreground",
-                  !isDone && !isCurrent && "border-muted-foreground/30 text-muted-foreground"
-                )}
-              >
-                {isDone ? <Check className="h-4 w-4" /> : index + 1}
-              </div>
+            <div className={cn("flex flex-col items-center", compact ? "gap-0.5" : "gap-1")}>
+              {compact ? (
+                <div
+                  className={cn(
+                    "h-3 w-3 rounded-full border-2 transition-colors",
+                    isDone && "border-green-500 bg-green-500",
+                    isCurrent && "border-primary bg-primary",
+                    !isDone && !isCurrent && "border-muted-foreground/30 bg-background"
+                  )}
+                />
+              ) : (
+                <div
+                  className={cn(
+                    "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors",
+                    isDone && "border-green-500 bg-green-500 text-white",
+                    isCurrent && "border-primary bg-primary text-primary-foreground",
+                    !isDone && !isCurrent && "border-muted-foreground/30 text-muted-foreground"
+                  )}
+                >
+                  {isDone ? <Check className="h-4 w-4" /> : index + 1}
+                </div>
+              )}
               <span
                 className={cn(
-                  "text-xs font-medium whitespace-nowrap",
+                  "font-medium whitespace-nowrap",
+                  compact ? "text-[10px]" : "text-xs",
                   isCurrent && "text-primary",
                   isDone && "text-green-600",
                   !isDone && !isCurrent && "text-muted-foreground"
@@ -45,7 +58,8 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
             {index < BILL_STATUS_ORDER.length - 1 && (
               <div
                 className={cn(
-                  "h-0.5 flex-1 mx-2 mb-5 transition-colors",
+                  "flex-1 mx-1 transition-colors",
+                  compact ? "h-px mb-3.5" : "h-0.5 mx-2 mb-5",
                   index < currentIndex ? "bg-green-500" : "bg-muted-foreground/20"
                 )}
               />

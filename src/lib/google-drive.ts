@@ -4,8 +4,9 @@ import { Readable } from "stream"
 function getDriveClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      type: "service_account",
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      private_key: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     },
     scopes: ["https://www.googleapis.com/auth/drive.file"],
   })
@@ -14,20 +15,26 @@ function getDriveClient() {
 
 export async function uploadToDrive(
   file: File,
-  billNumber: number
+  billNumber: number,
+  billDate?: Date
 ): Promise<{ id: string; url: string; filename: string }> {
   const drive = getDriveClient()
-  const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID!
 
   const buffer = Buffer.from(await file.arrayBuffer())
   const stream = Readable.from(buffer)
-  const filename = `bill-${billNumber}-${Date.now()}-${file.name}`
+
+  const dateStr = (billDate ?? new Date()).toLocaleDateString("th-TH", {
+    day: "2-digit", month: "2-digit", year: "2-digit",
+  }).replace(/\//g, "-")
+  const ext = file.name.split(".").pop() ?? "jpg"
+  const filename = `บิล-${billNumber}_${dateStr}_${Date.now()}.${ext}`
+
+  const requestBody: Record<string, unknown> = { name: filename }
+  const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID
+  if (folderId) requestBody.parents = [folderId]
 
   const res = await drive.files.create({
-    requestBody: {
-      name: filename,
-      parents: [folderId],
-    },
+    requestBody,
     media: { mimeType: file.type, body: stream },
     fields: "id, webViewLink",
   })
