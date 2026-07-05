@@ -5,6 +5,7 @@ import { FileText, CheckCircle, Clock } from "lucide-react"
 import { StatusStepper } from "@/components/bills/status-stepper"
 import { UpdateStatusButton } from "@/components/bills/update-status-button"
 import { DateFilter } from "@/components/dashboard/date-filter"
+import { AutoRefresh } from "@/components/dashboard/auto-refresh"
 import { BILL_STATUS_ORDER } from "@/lib/constants"
 import Link from "next/link"
 
@@ -59,6 +60,7 @@ export default async function DashboardPage({
 
   return (
     <div className="space-y-6">
+      <AutoRefresh />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">แดชบอร์ด</h1>
