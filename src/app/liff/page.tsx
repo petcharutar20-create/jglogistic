@@ -169,13 +169,10 @@ export default function LiffPage() {
                 <div key={bill.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="font-semibold text-gray-900">บิล #{bill.billNumber}</p>
+                      <p className="font-semibold text-gray-900">เลขที่บิล {bill.description ?? "-"}</p>
                       <p className="text-sm text-gray-500 mt-0.5">
                         {bill.origin ? `${bill.origin} → ` : ""}{bill.destination}
                       </p>
-                      {bill.description && (
-                        <p className="text-xs text-gray-400 mt-0.5">{bill.description}</p>
-                      )}
                     </div>
                     <span className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${STATUS_COLORS[bill.status]}`}>
                       {BILL_STATUS_LABELS[bill.status]}
@@ -220,7 +217,7 @@ export default function LiffPage() {
               <div key={bill.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 opacity-60">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-semibold text-gray-900">บิล #{bill.billNumber}</p>
+                    <p className="font-semibold text-gray-900">เลขที่บิล {bill.description ?? "-"}</p>
                     <p className="text-sm text-gray-500 mt-0.5">
                       {bill.origin ? `${bill.origin} → ` : ""}{bill.destination}
                     </p>
