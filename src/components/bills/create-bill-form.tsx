@@ -40,7 +40,7 @@ export function CreateBillForm({ vehicles, drivers, customers }: CreateBillFormP
       })
       if (!res.ok) throw new Error()
       const bill = await res.json()
-      toast.success(`สร้างบิล #${bill.billNumber} สำเร็จ`)
+      toast.success(`สร้างบิล #${bill.dailyNumber} สำเร็จ`)
       router.push(`/bills/${bill.id}`)
     } catch {
       toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่")
@@ -53,6 +53,17 @@ export function CreateBillForm({ vehicles, drivers, customers }: CreateBillFormP
     <Card>
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="billDate">วันที่บิล *</Label>
+            <Input
+              id="billDate"
+              name="billDate"
+              type="date"
+              required
+              defaultValue={new Date().toISOString().split("T")[0]}
+            />
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="destination">ปลายทาง *</Label>

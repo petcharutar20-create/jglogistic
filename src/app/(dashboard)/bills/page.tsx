@@ -27,7 +27,7 @@ export default async function BillsPage() {
           </p>
         </div>
         {isAdmin && (
-          <Button render={<Link href="/bills/new" />}>
+          <Button nativeButton={false} render={<Link href="/bills/new" />}>
             <Plus className="h-4 w-4 mr-1" />
             สร้างบิลใหม่
           </Button>
@@ -58,7 +58,7 @@ export default async function BillsPage() {
               <tr key={bill.id} className="border-t hover:bg-muted/30 transition-colors">
                 <td className="px-4 py-3">
                   <Link href={`/bills/${bill.id}`} className="font-bold hover:underline">
-                    #{bill.billNumber}
+                    #{bill.dailyNumber}
                   </Link>
                 </td>
                 <td className="px-4 py-3">

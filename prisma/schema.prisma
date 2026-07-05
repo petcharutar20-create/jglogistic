@@ -100,6 +100,8 @@ model Vehicle {
 model Bill {
   id          String     @id @default(cuid())
   billNumber  Int        @unique @default(autoincrement())
+  billDay     DateTime
+  dailyNumber Int
   status      BillStatus @default(RECEIVED)
   customerId  String?
   vehicleId   String?
@@ -107,6 +109,7 @@ model Bill {
   origin      String?
   destination String
   description String?
+  billDate    DateTime   @default(now())
   scheduledAt DateTime?
   completedAt DateTime?
   createdAt   DateTime   @default(now())
@@ -117,6 +120,8 @@ model Bill {
   driver        User?               @relation("AssignedDriver", fields: [driverId], references: [id])
   statusHistory BillStatusHistory[]
   photos        DeliveryPhoto[]
+
+  @@unique([billDay, dailyNumber])
 }
 
 model BillStatusHistory {
