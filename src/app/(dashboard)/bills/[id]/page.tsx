@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { StatusStepper } from "@/components/bills/status-stepper"
 import { UpdateStatusButton } from "@/components/bills/update-status-button"
 import { PhotoUpload } from "@/components/bills/photo-upload"
+import { DeleteBillButton } from "@/components/bills/delete-bill-button"
 import { BILL_STATUS_LABELS, BILL_STATUS_COLORS, BILL_STATUS_ORDER } from "@/lib/constants"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
@@ -37,16 +38,24 @@ export default async function BillDetailPage(props: { params: Promise<{ id: stri
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center gap-3">
-        <Link href="/bills" className="text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold">บิล #{bill.billNumber}</h1>
-          <Badge className={`mt-1 ${BILL_STATUS_COLORS[bill.status]}`}>
-            {BILL_STATUS_LABELS[bill.status]}
-          </Badge>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Link href="/bills" className="text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold">บิล #{bill.dailyNumber}</h1>
+            <div className="flex items-center gap-2 mt-1">
+              <Badge className={BILL_STATUS_COLORS[bill.status]}>
+                {BILL_STATUS_LABELS[bill.status]}
+              </Badge>
+              <span className="text-xs text-muted-foreground">
+                {bill.billDate.toLocaleDateString("th-TH", { day: "numeric", month: "long", year: "numeric" })}
+              </span>
+            </div>
+          </div>
         </div>
+        {isAdmin && <DeleteBillButton billId={bill.id} billNumber={bill.dailyNumber} />}
       </div>
 
       <Card>
@@ -74,6 +83,7 @@ export default async function BillDetailPage(props: { params: Promise<{ id: stri
           <Row label="รถขนส่ง" value={bill.vehicle?.plateNumber ?? "-"} />
           <Row label="พนักงานขนส่ง" value={bill.driver?.name ?? "-"} />
           {bill.customer && <Row label="ลูกค้า" value={bill.customer.name} />}
+          <Row label="วันที่บิล" value={bill.billDate.toLocaleDateString("th-TH", { day: "numeric", month: "long", year: "numeric" })} />
           <Row label="วันที่สร้าง" value={bill.createdAt.toLocaleDateString("th-TH")} />
           {bill.completedAt && (
             <Row label="วันที่เสร็จสิ้น" value={bill.completedAt.toLocaleDateString("th-TH")} />
