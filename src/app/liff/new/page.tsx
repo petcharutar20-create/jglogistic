@@ -42,13 +42,14 @@ export default function LiffNewBillPage() {
     const destination = (data.get("destination") as string)?.trim()
     const vehicleId = (data.get("vehicleId") as string) || null
     const billDate = (data.get("billDate") as string) || null
+    const description = (data.get("description") as string)?.trim() || null
     if (!destination) return
     setSubmitting(true)
     try {
       const res = await fetch("/api/liff/bills", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lineUserId, vehicleId, destination, billDate }),
+        body: JSON.stringify({ lineUserId, vehicleId, destination, billDate, description }),
       })
       if (!res.ok) {
         const err = await res.json()
@@ -107,6 +108,20 @@ export default function LiffNewBillPage() {
               defaultValue={today}
               max={today}
               required
+              style={fieldStyle}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 bg-white text-gray-900"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+              เลขที่บิล
+            </label>
+            <input
+              id="description"
+              type="text"
+              name="description"
+              placeholder="เช่น INV-001, 2567-0123"
               style={fieldStyle}
               className="w-full border border-gray-300 rounded-lg px-3 py-2.5 bg-white text-gray-900"
             />

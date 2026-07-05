@@ -42,11 +42,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { lineUserId, vehicleId, destination, billDate } = await request.json() as {
+  const { lineUserId, vehicleId, destination, billDate, description } = await request.json() as {
     lineUserId: string
     vehicleId?: string
     destination: string
     billDate?: string
+    description?: string
   }
 
   if (!lineUserId || !destination) {
@@ -70,6 +71,7 @@ export async function POST(request: Request) {
         driverId: driver.id,
         status: "RECEIVED",
         billDate: billDateObj,
+        description: description || null,
       },
       select: {
         id: true,
