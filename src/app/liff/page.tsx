@@ -148,14 +148,14 @@ export default function LiffPage() {
           href="/liff/new"
           className="block w-full bg-green-600 text-white font-medium py-3 rounded-xl text-center active:bg-green-700"
         >
-          + เลือกบิล
+          + สร้างบิลใหม่
         </a>
       </div>
 
       <div className="px-4 mt-4 space-y-3">
         {activeBills.length === 0 && completedBills.length === 0 && (
           <div className="text-center py-12 text-gray-400">
-            ยังไม่มีบิล กดเลือกบิลได้เลย
+            ยังไม่มีบิล กดสร้างบิลใหม่ได้เลย
           </div>
         )}
 
