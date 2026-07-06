@@ -63,8 +63,8 @@ export default async function DashboardPage({
       <AutoRefresh />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">แดชบอร์ด</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <h1 className="text-3xl font-bold">แดชบอร์ด</h1>
+          <p className="text-muted-foreground text-base mt-1">
             {isToday ? "ภาพรวมระบบขนส่งวันนี้" : "ข้อมูลย้อนหลัง"} ({dateLabel}) บริษัท จตุรโชคกรุ๊ป จำกัด
           </p>
         </div>
@@ -74,43 +74,43 @@ export default async function DashboardPage({
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">จำนวนบิล</CardTitle>
+            <CardTitle className="text-base font-medium">จำนวนบิล</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{total}</div>
+            <div className="text-5xl font-bold">{total}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">กำลังดำเนินการ</CardTitle>
+            <CardTitle className="text-base font-medium">กำลังดำเนินการ</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-500">{inProgress}</div>
+            <div className="text-5xl font-bold text-orange-500">{inProgress}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">เสร็จสิ้นแล้ว</CardTitle>
+            <CardTitle className="text-base font-medium">เสร็จสิ้นแล้ว</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-500">{completed}</div>
+            <div className="text-5xl font-bold text-green-500">{completed}</div>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">รายการบิล</CardTitle>
+          <CardTitle className="text-lg">รายการบิล</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {recentBills.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-base text-muted-foreground text-center py-4">
                 {isToday ? "วันนี้ยังไม่มีบิล" : "ไม่มีบิลในวันที่เลือก"}
               </p>
             )}
@@ -125,16 +125,16 @@ export default async function DashboardPage({
                     href={`/bills/${bill.id}`}
                     className="flex items-center gap-3 group"
                   >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-bold">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-base font-bold">
                       {bill.dailyNumber}
                     </div>
                     <div>
-                      <p className="text-sm font-medium group-hover:underline">{bill.destination}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-base font-medium group-hover:underline">{bill.destination}</p>
+                      <p className="text-sm text-muted-foreground">
                         {bill.vehicle?.plateNumber ?? "ยังไม่กำหนดรถ"} •{" "}
                         {bill.driver?.name ?? "ยังไม่กำหนดพนักงาน"}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm text-muted-foreground">
                         {bill.billDate.toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "numeric" })}
                       </p>
                     </div>
