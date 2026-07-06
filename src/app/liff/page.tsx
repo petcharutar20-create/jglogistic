@@ -169,7 +169,7 @@ export default function LiffPage() {
                 <div key={bill.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="font-semibold text-gray-900">เลขที่บิล {bill.description ?? "-"}</p>
+                      <p className="font-semibold text-gray-900">บัตรคิวที่ {bill.description ?? "-"}</p>
                       <p className="text-sm text-gray-500 mt-0.5">
                         {bill.origin ? `${bill.origin} → ` : ""}{bill.destination}
                       </p>
@@ -217,7 +217,7 @@ export default function LiffPage() {
               <div key={bill.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 opacity-60">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-semibold text-gray-900">เลขที่บิล {bill.description ?? "-"}</p>
+                    <p className="font-semibold text-gray-900">บัตรคิวที่ {bill.description ?? "-"}</p>
                     <p className="text-sm text-gray-500 mt-0.5">
                       {bill.origin ? `${bill.origin} → ` : ""}{bill.destination}
                     </p>
