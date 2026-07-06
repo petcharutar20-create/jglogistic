@@ -36,8 +36,8 @@ export function UpdateStatusButton({ billId, nextStatus }: UpdateStatusButtonPro
   }
 
   return (
-    <Button onClick={handleUpdate} disabled={loading} className="w-full sm:w-auto">
-      <ArrowRight className="h-4 w-4 mr-1" />
+    <Button onClick={handleUpdate} disabled={loading} size="lg" className="w-full sm:w-auto text-base">
+      <ArrowRight className="h-5 w-5 mr-1" />
       {loading ? "กำลังอัปเดต..." : `ดำเนินการต่อ: ${BILL_STATUS_LABELS[nextStatus]}`}
     </Button>
   )
