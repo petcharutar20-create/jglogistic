@@ -115,7 +115,7 @@ export default function LiffNewBillPage() {
 
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              เลขที่บิล
+              บัตรคิวที่
             </label>
             <input
               id="description"
