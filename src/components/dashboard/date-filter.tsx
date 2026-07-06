@@ -36,33 +36,33 @@ export function DateFilter({ selectedDate, today }: DateFilterProps) {
     <div className="flex items-center gap-2">
       <Button
         variant="outline"
-        size="icon"
+        size="lg"
         aria-label="วันก่อนหน้า"
         onClick={() => go(shiftDate(selectedDate, -1))}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-5 w-5" />
       </Button>
 
       <Input
         type="date"
         value={selectedDate}
         max={today}
-        className="w-auto"
+        className="w-auto text-base h-11"
         onChange={(e) => e.target.value && go(e.target.value)}
       />
 
       <Button
         variant="outline"
-        size="icon"
+        size="lg"
         aria-label="วันถัดไป"
         disabled={isToday}
         onClick={() => go(shiftDate(selectedDate, 1))}
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-5 w-5" />
       </Button>
 
       {!isToday && (
-        <Button variant="secondary" size="sm" onClick={() => go(today)}>
+        <Button variant="secondary" size="lg" className="text-base" onClick={() => go(today)}>
           วันนี้
         </Button>
       )}
