@@ -25,7 +25,7 @@ export function StatusStepper({ currentStatus, compact = false }: StatusStepperP
               {compact ? (
                 <div
                   className={cn(
-                    "h-3 w-3 rounded-full border-2 transition-colors",
+                    "h-4 w-4 rounded-full border-2 transition-colors",
                     isDone && "border-green-500 bg-green-500",
                     isCurrent && "border-primary bg-primary",
                     !isDone && !isCurrent && "border-muted-foreground/30 bg-background"
@@ -34,19 +34,19 @@ export function StatusStepper({ currentStatus, compact = false }: StatusStepperP
               ) : (
                 <div
                   className={cn(
-                    "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors",
+                    "flex h-11 w-11 items-center justify-center rounded-full border-2 text-base font-semibold transition-colors",
                     isDone && "border-green-500 bg-green-500 text-white",
                     isCurrent && "border-primary bg-primary text-primary-foreground",
                     !isDone && !isCurrent && "border-muted-foreground/30 text-muted-foreground"
                   )}
                 >
-                  {isDone ? <Check className="h-4 w-4" /> : index + 1}
+                  {isDone ? <Check className="h-5 w-5" /> : index + 1}
                 </div>
               )}
               <span
                 className={cn(
                   "font-medium whitespace-nowrap",
-                  compact ? "text-[10px]" : "text-xs",
+                  compact ? "text-xs" : "text-sm",
                   isCurrent && "text-primary",
                   isDone && "text-green-600",
                   !isDone && !isCurrent && "text-muted-foreground"
@@ -59,7 +59,7 @@ export function StatusStepper({ currentStatus, compact = false }: StatusStepperP
               <div
                 className={cn(
                   "flex-1 mx-1 transition-colors",
-                  compact ? "h-px mb-3.5" : "h-0.5 mx-2 mb-5",
+                  compact ? "h-px mb-4" : "h-0.5 mx-2 mb-6",
                   index < currentIndex ? "bg-green-500" : "bg-muted-foreground/20"
                 )}
               />
